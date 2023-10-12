@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frankisko.comantag.dao.CollectionMapper">
+    <resultMap id="collectionRow" type="com.frankisko.comantag.dto.CollectionRow">
+        <id property="idCollection" column="id_collection"/>
+        <result property="name" column="name"/>
+		<result property="location" column="location"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="mediaCount" column="media_count"/>
+    </resultMap>
+
+    <resultMap id="collectionRecord" type="com.frankisko.comantag.dto.CollectionRecord">
+        <result property="name" column="name"/>
+		<result property="location" column="location"/>
+    </resultMap>
+
+    <select id="getAll" resultMap="collectionRow">
+
+        SELECT
+            collections.id_collection, collections.name, collections.location,
+            collections.updated_at,
+            (
+                SELECT COUNT(1)
+				FROM media
+				WHERE media.id_collection = collections.id_collection
+            ) AS media_count
+        FROM collections
+        ORDER BY collections.id_collection ASC
+
+    </select>
+
+    <select id="getById" resultMap="collectionRecord">
+
+        SELECT
+            collections.name, collections.location
+        FROM collections
+        WHERE collections.id_collection = #{idCollection}
+
+    </select>
+
+    <select id="getLocation" resultType="String">
+
+        SELECT
+            collections.location
+        FROM collections
+        WHERE collections.id_collection = #{idCollection}
+
+    </select>
+
+
+    <insert id="insert">
+
+        INSERT INTO collections(
+            name, location, created_at, updated_at
+        ) VALUES (
+            #{name}, #{location}, #{createdAt}, #{updatedAt}
+        )
+
+    </insert>
+
+    <update id="update">
+
+        UPDATE collections SET
+            name = #{name},
+            updated_at = #{updatedAt}
+        WHERE id_collection = #{idCollection}
+
+    </update>
+
+    <update id="lastUpdate">
+
+        UPDATE collections SET
+            updated_at = STRFTIME('%s')
+        WHERE id_collection = #{idCollection}
+
+    </update>
+
+    <delete id="delete">
+
+        DELETE
+        FROM collections
+        WHERE id_collection = #{idCollection}
+
+    </delete>
+
+</mapper>

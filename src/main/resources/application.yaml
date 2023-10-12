@@ -1,0 +1,27 @@
+server:
+    port: 8090 # port number
+spring:
+    datasource:
+        type: com.zaxxer.hikari.HikariDataSource
+        url: jdbc:sqlite:./src/main/resources/db.sqlite
+        username:
+        password:
+        driver-class-name: org.sqlite.JDBC
+    mvc:
+        hiddenmethod:
+            filter:
+                enabled: true
+    thymeleaf:
+        cache: false
+    servlet:
+        multipart:
+            max-file-size: 100MB
+    devtools:
+        restart:
+            enabled: false
+            exclude: db.sqlite
+api_url: http://localhost:8090/api
+viewer: D:/Files/apps/HONEYVIEW-PORTABLE/Honeyview32.exe
+data_directory: saralicesoft/comantag
+
+
